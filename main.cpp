@@ -1,15 +1,17 @@
 #include <glut.h>
 
+#include "Field.h"
+#include "main.h"
 #include "Keyboard.h"
 #include "Window.h"
 
-void gameloop(int);
-void render();
-void update();
-
-Window win(1280, 720, "Pathfinding visualizer");
-
+bool fullscreen = false;
 const int frametime = 10;  //frametime in milliseconds
+const int w = 1280, h = 720;  //window resolution
+const int cell_size = 20;  //length of single field cell
+
+Window window(w, h, "Pathfinding visualizer");
+Field field(w, h, cell_size);
 
 int main()
 {
@@ -33,7 +35,12 @@ void gameloop(int = 0)
 
 void render()
 {
+	glClearColor(0.95, 0.95, 0.95, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 
+	field.drawField();
+
+	glFlush();
 }
 
 void update()
