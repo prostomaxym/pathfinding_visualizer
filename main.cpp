@@ -1,5 +1,7 @@
 #include <Windows.h>
 
+#include <vector>
+
 #include <glut.h>
 
 #include "main.h"
@@ -26,7 +28,7 @@ Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
 StartNode start;
 GoalNode goal;
-WallNode wall;
+std::vector <WallNode> wall;
 
 int main()
 {
@@ -37,7 +39,8 @@ int main()
 	glutTimerFunc(frametime, gameloop, 0);
 	glutKeyboardUpFunc(ReleaseKeyHandler);
 	glutKeyboardFunc(PressKeyHandler);
-	glutMouseFunc(mouseHandler);
+	glutMouseFunc(ClickMouseHandler);
+	glutMotionFunc(MotionMouseHandler);
 
 	//Game loop
 	glutMainLoop();
@@ -59,7 +62,11 @@ void render()
 	field.drawField();
 	start.drawNode();
 	goal.drawNode();
-	wall.drawNode();
+	for (auto i = 0; i < wall.size(); i++)
+	{
+		wall[i].drawNode();
+	}
+	
 
 	glFlush();
 }

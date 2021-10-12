@@ -17,3 +17,9 @@ void Node::setCoordinates(int x, int y)
 	this->x_ = x;
 	this->y_ = y;
 }
+
+std::pair <int,int> Node::getCoortinates()
+{
+	std::pair <int, int> coord(this->x_, this->y_);
+	return coord;
+}

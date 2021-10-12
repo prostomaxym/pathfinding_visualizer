@@ -1,6 +1,8 @@
 #ifndef PATHFINDING_VISUALIZER_MAIN_H_
 #define PATHFINDING_VISUALIZER_MAIN_H_
 
+#include <vector>
+
 #include "Field.h"
 #include "GoalNode.h"
 #include "StartNode.h"
@@ -23,6 +25,6 @@ extern Window window;
 extern Field field;
 extern StartNode start;
 extern GoalNode goal;
-extern WallNode wall;
+extern std::vector <WallNode> wall;
 
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_

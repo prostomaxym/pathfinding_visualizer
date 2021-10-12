@@ -2,7 +2,10 @@
 
 void PressKeyHandler(unsigned char key, int x, int y)
 {
-
+	if (key == 'r')
+	{
+		wall.clear();
+	}
 }
 
 void ReleaseKeyHandler(unsigned char key, int x, int y)
