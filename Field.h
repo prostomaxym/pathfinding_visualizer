@@ -3,6 +3,11 @@
 
 #include <glut.h>
 
+//forward declaration
+class StartNode;  
+class GoalNode;
+class WallNode;
+
 class Field
 {
 public:
@@ -17,7 +22,5 @@ private:
 	int width, height;
 	int scale;
 };
-
-extern Field field;
 #endif  // PATHFINDING_VISUALIZER_FIELD_H_
 

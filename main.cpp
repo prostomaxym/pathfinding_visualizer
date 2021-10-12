@@ -4,9 +4,11 @@
 
 #include "main.h"
 #include "Field.h"
+#include "GoalNode.h"
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "StartNode.h"
+#include "WallNode.h"
 #include "Window.h"
 
 //Resolution related variables
@@ -22,7 +24,9 @@ const int cell_size = 20;  //length of single field cell
 
 Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
-StartNode startNode;
+StartNode start;
+GoalNode goal;
+WallNode wall;
 
 int main()
 {
@@ -49,26 +53,13 @@ void gameloop(int = 0)
 
 void render()
 {
-	glClearColor(0.95, 0.95, 0.95, 1);
+	glClearColor(0.95f, 0.95f, 0.95f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	//field.drawField();
-	glColor3f(0, 0, 0);
-	glBegin(GL_LINES);
-
-	for (int i = 0; i < 1920; i += 20)
-	{
-		glVertex2f(i, 0);
-		glVertex2f(i, 1080);
-	}
-
-	for (int j = 0; j < 1080; j += 20)
-	{
-		glVertex2f(0, j);
-		glVertex2f(1920, j);
-	}
-	glEnd();
-	startNode.drawNode();
+	field.drawField();
+	start.drawNode();
+	goal.drawNode();
+	wall.drawNode();
 
 	glFlush();
 }

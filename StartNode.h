@@ -18,6 +18,6 @@ private:
 	const float r=0.0f, g=1.0f, b=0.0f;  // Node color
 };
 
-extern StartNode startNode;
+//extern StartNode startNode;
 #endif  // PATHFINDING_VISUALIZER_STARTNODE_H_
 
