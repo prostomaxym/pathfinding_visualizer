@@ -11,13 +11,15 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 	{
 		if (fullscreen)
 		{
-			//glutReshapeWindow(w, h);
 			fullscreen = false;
+			window.enterFullscreen(kWidth, kHeight);
+			field.resizeField(kWidth, kHeight);
 		}
 		else
 		{
-			glutFullScreen();
 			fullscreen = true;
+			window.leaveFullscreen(kFullWidth, kFullHeight);
+			field.resizeField(kFullWidth, kFullHeight);
 		}
 	}
 }

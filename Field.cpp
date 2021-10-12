@@ -32,3 +32,14 @@ void Field::drawField()
 	}
 	glEnd();
 }
+
+int Field::getScale()
+{
+	return this->scale;
+}
+
+void Field::resizeField(int w, int h)
+{
+	this->width = w;
+	this->height = h;
+}

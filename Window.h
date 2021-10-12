@@ -11,6 +11,9 @@ public:
 	Window();
 	Window(int w, int h, std::string winname);
 
+	void enterFullscreen(int w, int h);
+	void leaveFullscreen(int w, int h);
+
 private:
 	int width, height; //window resolution
 	std::string window_name;
