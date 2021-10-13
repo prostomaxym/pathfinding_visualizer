@@ -28,6 +28,12 @@ void PressKeyHandler(unsigned char key, int x, int y)
 		wall.clear();
 		generateRandomWalls(kNumRandWall);
 	}
+	if (key == 'f')
+	{
+		Heuristic func;
+		std::list <Node*> result = A_star(&start, &goal, func);
+		int a = 10;
+	}
 }
 
 void ReleaseKeyHandler(unsigned char key, int x, int y)

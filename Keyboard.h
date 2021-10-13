@@ -6,6 +6,7 @@
 
 #include <glut.h>
 
+#include "A_star.h"
 #include "Field.h"
 #include "main.h"
 #include "Mouse.h"

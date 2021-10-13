@@ -45,6 +45,9 @@
     <ClCompile Include="Heuristic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="A_star.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Heuristic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="A_star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,12 +3,18 @@
 
 #include <cmath>
 
+#include "Node.h"
+
 class Heuristic
 {
 public:
-	double manhattan(int dx, int dy);
-	double euclidean(int dx, int dy);
-	double octile(int dx, int dy);
-	double chebyshev(int dx, int dy);
+	float manhattan(Node* a, Node* b);
+	float euclidean(Node* a, Node* b);
+	float octile(Node* a, Node* b);
+	float chebyshev(Node* a, Node* b);
+
+private:
+	float getDX(Node* a, Node* b);
+	float getDY(Node* a, Node* b);
 };
 #endif  // PATHFINDING_VISUALIZER_HEURISTIC_H_

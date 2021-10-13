@@ -1,22 +1,39 @@
 #include "Heuristic.h"
 
-double Heuristic::manhattan(int dx, int dy)
+float Heuristic::getDX(Node* a, Node* b)
 {
+	return a->getX() - b->getX();
+}
+float Heuristic::getDY(Node* a, Node* b)
+{
+	return a->getY() - b->getY();
+}
+
+float Heuristic::manhattan(Node* a, Node* b)
+{
+	float dx = getDX(a, b);
+	float dy= getDY(a, b);
 	return dx + dy;
 }
 
-double Heuristic::euclidean(int dx, int dy)
+float Heuristic::euclidean(Node* a, Node* b)
 {
+	float dx = getDX(a, b);
+	float dy = getDY(a, b);
 	return sqrt(dx * dx + dy * dy);
 }
 
-double Heuristic::octile(int dx, int dy)
+float Heuristic::octile(Node* a, Node* b)
 {
+	float dx = getDX(a, b);
+	float dy = getDY(a, b);
 	double F = sqrt(2) - 1;
 	return (dx < dy) ? (F * dx + dy ) : (F * dy + dx);
 }
 
-double Heuristic::chebyshev(int dx, int dy)
+float Heuristic::chebyshev(Node* a, Node* b)
 {
+	float dx = getDX(a, b);
+	float dy = getDY(a, b);
 	return (dx > dy) ? dx : dy;
 }
