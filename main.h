@@ -17,6 +17,7 @@ extern float DPIscale;  //Windows DPIscale
 extern const int kFullWidth, kFullHeight;  //fullscreen window resolution
 extern const int kWidth,kHeight;  //default window resolution
 extern bool fullscreen;  //window mode
+extern int kNumRandWall;  //number of random wall nodes
 
 extern int frametime;  //frametime in milliseconds
 extern int cell_size;  //length of single field cell

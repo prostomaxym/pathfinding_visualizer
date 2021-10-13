@@ -1,5 +1,7 @@
+#include <ctime>
 #include <Windows.h>
 
+#include <random>
 #include <vector>
 
 #include <glut.h>
@@ -19,8 +21,9 @@ float DPIscale = (float)GetDpiFromDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYST
 const int kFullWidth = glutGet(GLUT_SCREEN_WIDTH) * DPIscale;  //fullscreen width resolution
 const int kFullHeight= glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen height resolution
 const int kWidth = 1280, kHeight = 720;  //default window resolution
-bool fullscreen = false; //default screen mode
+bool fullscreen = false;  //default screen mode
 
+int kNumRandWall = 750;  //number of random wall nodes
 int frametime = 10;  //frametime in milliseconds
 int cell_size = 20;  //length of single field cell
 
@@ -32,6 +35,7 @@ std::vector <WallNode> wall;
 
 int main()
 {
+	srand(time(NULL));
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
 	//GLut func initialization

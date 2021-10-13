@@ -16,7 +16,7 @@ double Heuristic::octile(int dx, int dy)
 	return (dx < dy) ? (F * dx + dy ) : (F * dy + dx);
 }
 
-double Heuristic::octile(int dx, int dy)
+double Heuristic::chebyshev(int dx, int dy)
 {
 	return (dx > dy) ? dx : dy;
 }
