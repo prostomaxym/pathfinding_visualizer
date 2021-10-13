@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="GoalNode.cpp" />
+    <ClCompile Include="Heuristic.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Field.h" />
     <ClInclude Include="GoalNode.h" />
+    <ClInclude Include="Heuristic.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Mouse.h" />

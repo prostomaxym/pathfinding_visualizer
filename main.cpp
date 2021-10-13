@@ -21,8 +21,8 @@ const int kFullHeight= glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen hei
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false; //default screen mode
 
-const int frametime = 10;  //frametime in milliseconds
-const int cell_size = 20;  //length of single field cell
+int frametime = 10;  //frametime in milliseconds
+int cell_size = 20;  //length of single field cell
 
 Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
@@ -62,11 +62,10 @@ void render()
 	field.drawField();
 	start.drawNode();
 	goal.drawNode();
-	for (auto i = 0; i < wall.size(); i++)
+	for (size_t i = 0; i < wall.size(); i++)
 	{
 		wall[i].drawNode();
 	}
-	
 
 	glFlush();
 }
