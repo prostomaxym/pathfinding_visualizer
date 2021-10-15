@@ -12,6 +12,8 @@ public:
 	virtual void drawNode()=0;
 	void setCoordinates(int x, int y);
 	std::pair <int, int> getCoortinates();
+	int getX();
+	int getY();
 
 protected:
 	int x_, y_; //node coordinates
