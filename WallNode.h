@@ -3,8 +3,6 @@
 
 #include <glut.h>
 
-#include "Field.h"
-#include "main.h"
 #include "Node.h"
 
 class WallNode : public Node

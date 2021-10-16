@@ -32,6 +32,36 @@ Field field(kWidth, kHeight, cell_size);
 StartNode start;
 GoalNode goal;
 std::vector <WallNode> wall;
+A_star astar;
+
+
+bool intersect(std::pair <int, int> coord)
+{
+	if (start.getCoortinates() == coord) return true;
+	if (goal.getCoortinates() == coord) return true;
+	for (size_t i = 0; i < wall.size(); i++)
+	{
+		if (wall[i].getCoortinates() == coord) return true;
+	}
+	return false;
+}
+
+void generateRandomWalls(int number)
+{
+	int x, y;
+	std::pair <int, int> coord;
+	for (int i = 0; i < number; i++)
+	{
+		x = (rand() % glutGet(GLUT_WINDOW_WIDTH)) / field.getScale();
+		y = (rand() % glutGet(GLUT_WINDOW_HEIGHT)) / field.getScale();
+		coord = std::make_pair(x, y);
+		if (!intersect(coord))
+		{
+			wall.push_back(WallNode(x, y));
+		}
+		else i--;
+	}
+}
 
 int main()
 {
@@ -70,7 +100,13 @@ void render()
 	{
 		wall[i].drawNode();
 	}
-
+	if (!(astar.getPath()).empty())
+	{
+		for (auto n : astar.getPath())
+		{
+			n->drawNode();
+		}
+	}
 	glFlush();
 }
 

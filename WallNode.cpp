@@ -1,5 +1,7 @@
 #include "WallNode.h"
 
+#include "main.h"
+
 void WallNode::drawNode()
 {
 	glColor3f(r, g, b);

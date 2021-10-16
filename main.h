@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "A_star.h"
 #include "Field.h"
 #include "GoalNode.h"
 #include "StartNode.h"
@@ -27,5 +28,8 @@ extern Field field;
 extern StartNode start;
 extern GoalNode goal;
 extern std::vector <WallNode> wall;
+extern A_star astar;
 
+bool intersect(std::pair <int, int> coord);
+void generateRandomWalls(int number);
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_

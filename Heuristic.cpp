@@ -1,40 +1,40 @@
 #include "Heuristic.h"
 
-float Heuristic::getDX(Node* A, Node* B)
+float getDX(Node* A, Node* B)
 {
 	return A->getX() - B->getX();
 }
 
-float Heuristic::getDY(Node* A, Node* B)
+float getDY(Node* A, Node* B)
 {
 	return A->getY() - B->getY();
 }
 
-float Heuristic::manhattan(Node* A, Node* B)
+float manhattan(Node* A, Node* B)
 {
 	float dx = getDX(A, B);
 	float dy = getDY(A, B);
-	return dx + dy;
+	return abs(dx) + abs(dy);
 }
 
-float Heuristic::euclidean(Node* A, Node* B)
+float euclidean(Node* A, Node* B)
 {
 	float dx = getDX(A, B);
 	float dy = getDY(A, B);
 	return sqrt(dx * dx + dy * dy);
 }
 
-float Heuristic::octile(Node* A, Node* B)
+float octile(Node* A, Node* B)
 {
 	float dx = getDX(A, B);
 	float dy = getDY(A, B);
 	float F = sqrt(2) - 1;
-	return (dx < dy) ? (F * dx + dy ) : (F * dy + dx);
+	return (abs(dx) < abs(dy)) ? (F * abs(dx) + abs(dy)) : (F * abs(dy) + abs(dx));
 }
 
-float Heuristic::chebyshev(Node* A, Node* B)
+float chebyshev(Node* A, Node* B)
 {
 	float dx = getDX(A, B);
 	float dy = getDY(A, B);
-	return (dx > dy) ? dx : dy;
+	return (abs(dx) > abs(dy)) ? abs(dx) : abs(dy);
 }

@@ -1,5 +1,7 @@
 #include "StartNode.h"
 
+#include "main.h"
+
 void StartNode::drawNode()
 {
 	glColor3f(r,g,b);

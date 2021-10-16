@@ -1,15 +1,5 @@
 #include "Mouse.h"
 
-bool intersect(std::pair <int, int> mouseGet)
-{
-	if (start.getCoortinates() == mouseGet) return true;
-	if (goal.getCoortinates() == mouseGet) return true;
-	for (size_t i = 0; i < wall.size(); i++)
-	{
-		if (wall[i].getCoortinates() == mouseGet) return true;
-	}
-	return false;
-}
 
 void ClickMouseHandler(int button, int state, int x, int y)
 {

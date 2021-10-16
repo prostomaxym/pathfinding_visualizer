@@ -2,11 +2,14 @@
 #define PATHFINDING_VISUALIZER_KEYBOARD_H_
 
 #include <random>
+#include <list>
 #include <utility>
 
 #include <glut.h>
 
+#include "A_star.h"
 #include "Field.h"
+#include "Heuristic.h"
 #include "main.h"
 #include "Mouse.h"
 #include "WallNode.h"
