@@ -59,7 +59,7 @@ void Node::setCoordinates(int x, int y)
 	this->y_ = y;
 }
 
-std::pair <int,int> Node::getCoortinates()
+std::pair <int,int> Node::getCoordinates()
 {
 	std::pair <int, int> coord(this->x_, this->y_);
 	return coord;
@@ -81,15 +81,19 @@ std::list <Node*> Node::getNeighbours()
 	{
 		{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}
 	};*/
-
 	int direction[4][2] =
 	{
 		{-1,0},{0,1},{1,0},{0,-1}
 	};
+	std::list <Node*> previous_neighbours;
+	if (parent!= NULL)
+	{
+		previous_neighbours = std::list<Node*>(parent->neighbours);
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (goal.getCoortinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
+		if (goal.getCoordinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
 		{
 			neighbours.push_back(new Node(x_ + direction[i][0], y_ + direction[i][1]));
 		}
@@ -99,7 +103,23 @@ std::list <Node*> Node::getNeighbours()
 				&& x_ + direction[i][0] <= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
 				&& y_ + direction[i][1] <= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
 			{
-				neighbours.push_back(new Node(x_ + direction[i][0], y_ + direction[i][1]));
+				if (parent == NULL)
+				{
+					neighbours.push_back(new Node(x_ + direction[i][0], y_ + direction[i][1]));
+				}
+				else if (std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
+					[&](Node* p) { return p->getCoordinates() == 
+					std::make_pair(x_ + direction[i][0], y_ + direction[i][1]); }) == previous_neighbours.end())
+				{
+					neighbours.push_back(new Node(x_ + direction[i][0], y_ + direction[i][1]));
+				}
+				else
+				{
+					neighbours.splice(neighbours.end(), previous_neighbours, 
+						std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
+						[&](Node* p) { return p->getCoordinates() ==
+						std::make_pair(x_ + direction[i][0], y_ + direction[i][1]); }));
+				}
 			}
 		}
 	}
@@ -146,9 +166,18 @@ float Node::getFscore()
 	return this->fScore;
 }
 
-bool Node::operator==(const Node* A)
+bool Node::operator==(const Node *A)
 {
 	if ((this->x_ == A->x_) && (this->y_ == A->y_))
+	{
+		return true;
+	}
+	else return false;
+}
+
+bool Node::operator==(const Node &A)
+{
+	if ((this->x_ == A.x_) && (this->y_ == A.y_))
 	{
 		return true;
 	}

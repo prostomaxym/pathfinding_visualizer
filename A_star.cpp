@@ -29,13 +29,13 @@ bool A_star::Astar(Node* start, Node* goal, float (*h)(Node*, Node*))
 	while (!pq.empty())
 	{
 		Node* current_node = pq.front();
-		if (current_node->getCoortinates() == goal->getCoortinates())
+		if (current_node->getCoordinates() == goal->getCoordinates())
 		{
 			goal->setParent(current_node);
 			reconstructPath(start, goal);
 			return true;
 		}
-		std::pop_heap(pq.begin(), pq.end(), &A_star::compare_fScore);
+		std::pop_heap(pq.begin(), pq.end(), compare_fScore);
 		pq.pop_back();
 		for (auto n : current_node->getNeighbours())
 		{
@@ -46,7 +46,8 @@ bool A_star::Astar(Node* start, Node* goal, float (*h)(Node*, Node*))
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));
 				n->setFscore();
-				if (std::find(pq.begin(), pq.end(), n) == pq.end())
+				if (std::find_if(pq.begin(), pq.end(), 
+					[&](Node * p) { return p->getCoordinates()==n->getCoordinates(); }) == pq.end())
 				{
 					pq.push_back(n);
 					std::push_heap(pq.begin(), pq.end(), compare_fScore);

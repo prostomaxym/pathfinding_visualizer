@@ -13,7 +13,8 @@ public:
 	Node(const Node &a);
 	Node(const Node *a);
 
-	bool operator==(const Node* A);
+	bool operator==(const Node *A);
+	bool operator==(const Node &A);
 
 	virtual void drawNode();
 
@@ -23,7 +24,7 @@ public:
 	void setHscore(float h);
 	void setFscore();
 
-	std::pair <int, int> getCoortinates();
+	std::pair <int, int> getCoordinates();
 	int getX();
 	int getY();
 	Node* getParent();

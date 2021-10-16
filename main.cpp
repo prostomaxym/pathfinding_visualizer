@@ -37,11 +37,11 @@ A_star astar;
 
 bool intersect(std::pair <int, int> coord)
 {
-	if (start.getCoortinates() == coord) return true;
-	if (goal.getCoortinates() == coord) return true;
+	if (start.getCoordinates() == coord) return true;
+	if (goal.getCoordinates() == coord) return true;
 	for (size_t i = 0; i < wall.size(); i++)
 	{
-		if (wall[i].getCoortinates() == coord) return true;
+		if (wall[i].getCoordinates() == coord) return true;
 	}
 	return false;
 }
@@ -63,6 +63,7 @@ void generateRandomWalls(int number)
 	}
 }
 
+//TODO memory leak
 int main()
 {
 	srand(time(NULL));
