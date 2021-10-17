@@ -9,15 +9,21 @@ void Text::glWrite(float x, float y, int* font, std::string text)
 		glutBitmapCharacter(font, (int)text[i]);
 }
 
-void Text::drawAlgName(int xcoord, int ycoord)
+void Text::drawAlgName(int x, int y)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 12, x + 150, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
 	glColor3f(1.0f, 0.4f, 0.3f);
-	this->glWrite(xcoord, glutGet(GLUT_WINDOW_HEIGHT)-ycoord,
+	this->glWrite(x, glutGet(GLUT_WINDOW_HEIGHT)-y,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "A* Pathfinding");
 }
 
 void Text::drawNodeCount(float x, float y, int count)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 40, x + 250, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(x, glutGet(GLUT_WINDOW_HEIGHT) - y,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Number of nodes visited:");
@@ -29,6 +35,9 @@ void Text::drawNodeCount(float x, float y, int count)
 
 void Text::drawCostCount(float x, float y, int count)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 40, x + 270, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(x, glutGet(GLUT_WINDOW_HEIGHT) - y,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Cost function assignments:");
@@ -40,6 +49,10 @@ void Text::drawCostCount(float x, float y, int count)
 
 void Text::drawKeyGuide(int x, int y)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) / 2 + x - 100, glutGet(GLUT_WINDOW_HEIGHT) - y - 110, 
+		glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 450, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH)/2 + x - 100, glutGet(GLUT_WINDOW_HEIGHT) - y - 37,
 		(int*)GLUT_BITMAP_HELVETICA_18, "Key Guide:");
@@ -106,18 +119,26 @@ void Text::drawActiveHeuristic(int x, int y, HeuristicFunc h)
 		break;
 	}
 
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y - 35,
+		glutGet(GLUT_WINDOW_WIDTH) - x + 180, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Selected heuristic:");
 
 	glColor3f(0.4f, 0.3f, 0.8f);
-	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x + 40, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, enumStr);
 }
 
 void Text::drawRenderSpeed(int x, int y, bool slow)
 {
 	std::string mode(slow? "5X":"1X");
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y - 35,
+		glutGet(GLUT_WINDOW_WIDTH) - x + 130, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
 
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y,

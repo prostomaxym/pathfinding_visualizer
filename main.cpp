@@ -69,8 +69,8 @@ void generateRandomWalls(int number)
 }
 
 //TODO 
-//Make UI
-//Make operation counter
+//review A* core, neighbours, fix failure case
+//fix counter
 int main()
 {
 	srand(time(NULL));
