@@ -33,6 +33,7 @@ StartNode start;
 GoalNode goal;
 std::vector <WallNode> wall;
 A_star astar;
+std::list <Node*> graph;
 
 
 bool intersect(std::pair <int, int> coord)
@@ -101,7 +102,7 @@ void render()
 	{
 		wall[i].drawNode();
 	}
-	if (!(astar.getPath()).empty())
+	if (!graph.empty())
 	{
 		for (auto n : astar.getPath())
 		{

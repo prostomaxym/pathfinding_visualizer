@@ -13,6 +13,10 @@ void PressKeyHandler(unsigned char key, int x, int y)
 	}
 	if (key == 'g')
 	{
+		while (!graph.empty())
+		{
+			delete graph.front(), graph.pop_front();
+		}
 		bool found = astar.Astar(&start, &goal, &manhattan);
 	}
 }

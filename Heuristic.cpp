@@ -38,3 +38,9 @@ float chebyshev(Node* A, Node* B)
 	float dy = getDY(A, B);
 	return (abs(dx) > abs(dy)) ? abs(dx) : abs(dy);
 }
+
+//Special case h(x)=0 for turning A* into Dijkstra
+float hZero(Node* A, Node* B) 
+{
+	return NULL;
+}

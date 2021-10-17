@@ -7,6 +7,7 @@
 
 #include "A_star.h"
 #include "Node.h"
+#include "main.h"
 
 bool A_star::compare_fScore(Node* n1, Node* n2)
 {
@@ -46,7 +47,7 @@ bool A_star::Astar(Node* start, Node* goal, float (*h)(Node*, Node*))
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));
 				n->setFscore();
-				if (std::find_if(pq.begin(), pq.end(), 
+				if (std::find_if(pq.begin(), pq.end(), //check if node already present in heap
 					[&](Node * p) { return p->getCoordinates()==n->getCoordinates(); }) == pq.end())
 				{
 					pq.push_back(n);
@@ -66,7 +67,7 @@ std::list <Node*> A_star::getPath()
 void A_star::reconstructPath(Node* start, Node* goal)
 {
 	path.clear();
-	Node* current = new Node(goal->getParent());
+	Node *current(goal->getParent());
 	path.push_back(current);
 	while (current != start)
 	{

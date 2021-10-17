@@ -29,6 +29,7 @@ extern StartNode start;
 extern GoalNode goal;
 extern std::vector <WallNode> wall;
 extern A_star astar;
+extern std::list <Node*> graph;
 
 bool intersect(std::pair <int, int> coord);
 void generateRandomWalls(int number);
