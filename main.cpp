@@ -12,6 +12,7 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "StartNode.h"
+#include "Text.h"
 #include "WallNode.h"
 #include "Window.h"
 
@@ -24,17 +25,20 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
 int kNumRandWall = 750;  //number of random wall nodes
-int frametime = 10;  //frametime in milliseconds
+int frametime = 1;  //frametime in milliseconds
 int cell_size = 20;  //length of single field cell
+bool finding = false;  //pathfinding state
+bool slowmode = false;  //toggle update time 1X-5X
 
 Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
 StartNode start;
 GoalNode goal;
 std::vector <WallNode> wall;
-A_star astar;
+A_star pathfind;
 std::list <Node*> graph;
-
+HeuristicFunc func = HeuristicFunc::manhattan;
+Text ui;
 
 bool intersect(std::pair <int, int> coord)
 {
@@ -64,7 +68,9 @@ void generateRandomWalls(int number)
 	}
 }
 
-//TODO memory leak
+//TODO 
+//Make UI
+//Make operation counter
 int main()
 {
 	srand(time(NULL));
@@ -95,24 +101,59 @@ void render()
 	glClearColor(0.95f, 0.95f, 0.95f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	field.drawField();
-	start.drawNode();
-	goal.drawNode();
-	for (size_t i = 0; i < wall.size(); i++)
+	if (!graph.empty())  //draw visited nodes
 	{
-		wall[i].drawNode();
-	}
-	if (!graph.empty())
-	{
-		for (auto n : astar.getPath())
+		for (auto n : graph)
 		{
 			n->drawNode();
 		}
 	}
+	for (size_t i = 0; i < wall.size(); i++)  //draw wall
+	{
+		wall[i].drawNode();
+	}
+	start.drawNode();
+	goal.drawNode();
+	if (!(pathfind.getPath()).empty() && finding==false)  //draw path
+	{
+		for (auto n : pathfind.getPath())
+		{
+			n->drawNode(1.0f, 1.0f, 0.0f);
+		}
+	}
+	field.drawField();
+
+	ui.drawAlgName(25, 40);
+	ui.drawNodeCount(35, 100, pathfind.numNodesVisited);
+	ui.drawCostCount(35, 175, pathfind.numCostAssign);
+	ui.drawKeyGuide(-200, 60);
+	ui.drawActiveHeuristic(300, 50, func);
+	ui.drawRenderSpeed(300, 125, slowmode);
+
 	glFlush();
 }
 
 void update()
 {
-
+	if (finding == true)
+	{
+		switch (func)
+		{
+		case HeuristicFunc::manhattan:
+			finding = pathfind.tick(&start, &goal, manhattan);
+			break;
+		case HeuristicFunc::euclidean:
+			finding = pathfind.tick(&start, &goal, euclidean);
+			break;
+		case HeuristicFunc::octile:
+			finding = pathfind.tick(&start, &goal, octile);
+			break;
+		case HeuristicFunc::chebyshev:
+			finding = pathfind.tick(&start, &goal, chebyshev);
+			break;
+		case HeuristicFunc::hZero:
+			finding = pathfind.tick(&start, &goal, hZero);
+			break;
+		}
+	}
 }

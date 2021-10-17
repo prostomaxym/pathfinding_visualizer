@@ -12,12 +12,17 @@
 class A_star
 {
 public:
-	bool Astar(Node* start, Node* goal, float (*h)(Node*, Node*));
+	int numNodesVisited;  //number of nodes visited
+	int numCostAssign;  //number of cost function assignments done
+	A_star();
+	void rebuild();
+
+	bool tick(Node* start, Node* goal, float (*h)(Node*, Node*)); //h - Heuristic function
 	std::list <Node*> getPath();
 
 private:
-
-	std::list <Node*> path;
+	std::vector <Node*> pq;  //priority queue or min heap
+	std::list <Node*> path; //final path from star to goal
 
 	static bool compare_fScore(Node* n1, Node* n2);
 	void reconstructPath(Node* start, Node* goal);

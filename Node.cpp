@@ -8,8 +8,8 @@ Node::Node()
 	this->y_ = 0;
 
 	this->parent=nullptr;
-	this->gScore = 9999.0f;  //much bigger than max graph distance - 9999.0f instead of INF
-	this->hScore = 9999.0f;  //much bigger than max graph distance - 9999.0f instead of INF
+	this->gScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
+	this->hScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
 	this->fScore=gScore+hScore;
 }
 
@@ -19,8 +19,8 @@ Node::Node(int x, int y)
 	this->y_ = y;
 
 	this->parent = nullptr;
-	this->gScore = 9999.0f;  //much bigger than max graph distance - 9999.0f instead of INF
-	this->hScore = 9999.0f;  //much bigger than max graph distance - 9999.0f instead of INF
+	this->gScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
+	this->hScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
 	this->fScore = gScore + hScore;
 }
 
@@ -37,11 +37,17 @@ Node::Node(const Node &a)
 
 void Node::drawNode()
 {
-	glColor3f(0.f, 0.4f, 0.8f);
+	glColor3f(0.0f, 0.7f, 0.95f);
 	glRectf(/*x1 point*/this->x_ * field.getScale(), /*y1 point*/this->y_ * field.getScale(),
 		/*x2 point*/(this->x_ + 1) * field.getScale(), /*y2 point*/(this->y_ + 1) * field.getScale());
 }
 
+void Node::drawNode(float r, float g, float b)
+{
+	glColor3f(r, g, b);
+	glRectf(/*x1 point*/this->x_ * field.getScale(), /*y1 point*/this->y_ * field.getScale(),
+		/*x2 point*/(this->x_ + 1) * field.getScale(), /*y2 point*/(this->y_ + 1) * field.getScale());
+}
 void Node::setCoordinates(int x, int y)
 {
 	this->x_ = x;
@@ -66,8 +72,8 @@ int Node::getY()
 
 std::list <Node*> Node::getNeighbours()
 {
-	//8 way move direction, working but not stresstested, possible errors
-	/*int direction[8][2] =    
+	//8 way move direction. Working but not stresstested, possible errors
+	/*int direction[8][2] =
 	{
 		{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}
 	};*/
@@ -83,7 +89,7 @@ std::list <Node*> Node::getNeighbours()
 		previous_neighbours = std::list<Node*>(parent->neighbours);
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < sizeof(direction)/(2*sizeof(int)); i++)
 	{
 		Node *tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
 		graph.push_back(tmp);  //all heap alloc instances are deleted looping through graph after path is found 
@@ -102,7 +108,8 @@ std::list <Node*> Node::getNeighbours()
 				{
 					neighbours.push_back(tmp);
 				}
-				//check if tmp is already present in parent node's neighbours
+				// if tmp is not present in parent node's neighbours - create new neighbour node 
+				// otherwise - splice neighbour address from parent to this
 				else if (std::find_if(previous_neighbours.begin(), previous_neighbours.end(), 
 					[&](Node* p) { return p->getCoordinates() == tmp->getCoordinates(); }) == previous_neighbours.end())
 				{
@@ -110,10 +117,12 @@ std::list <Node*> Node::getNeighbours()
 				}
 				else
 				{
+					//splice neighbour node address from parent to child and delete in parent node
 					neighbours.splice(neighbours.end(), previous_neighbours, 
 						std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
 						[&](Node* p) { return p->getCoordinates() == tmp->getCoordinates(); }));
-					delete tmp; //avoid creating unnecessary nodes
+
+					delete tmp; //avoid dublicating nodes
 					graph.pop_back();
 				}
 			}

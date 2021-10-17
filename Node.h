@@ -13,6 +13,7 @@ public:
 	Node(const Node &a);
 
 	virtual void drawNode();
+	void drawNode(float r, float g, float b);
 	void deleteGraph();
 
 	void setCoordinates(int x, int y);
