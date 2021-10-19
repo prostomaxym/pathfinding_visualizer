@@ -42,12 +42,12 @@ bool A_star::compare_fScore(Node* n1, Node* n2)
 
 bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 {
-	if (start->getCoordinates() == goal->getCoordinates()) return false;
+	if (*start==*goal) return false;
 	start->setHscore(h(goal, start));
 	while (!pq.empty())
 	{
 		Node* current_node = pq.front();
-		if (current_node->getCoordinates() == goal->getCoordinates())
+		if (*current_node==*goal)
 		{
 			goal->setParent(current_node);
 			reconstructPath(start, goal);
@@ -55,6 +55,7 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 		}
 		std::pop_heap(pq.begin(), pq.end(), compare_fScore);
 		pq.pop_back();
+
 		for (auto n : current_node->getNeighbours())
 		{
 			numNodesVisited++;
@@ -66,8 +67,8 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));
 				n->setFscore();
-				if (std::find_if(pq.begin(), pq.end(), //check if node already present in heap
-					[&](Node * p) { return p->getCoordinates()==n->getCoordinates(); }) == pq.end())
+				if (std::find_if(pq.begin(), pq.end(), //check if node is not present in heap
+				[&](Node *p) { return *p==*n; }) == pq.end())
 				{
 					pq.push_back(n);
 					std::push_heap(pq.begin(), pq.end(), compare_fScore);

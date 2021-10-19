@@ -12,9 +12,10 @@ public:
 	Node(int x, int y);
 	Node(const Node &a);
 
+	bool operator==(Node & obj);
+
 	virtual void drawNode();
 	void drawNode(float r, float g, float b);
-	void deleteGraph();
 
 	void setCoordinates(int x, int y);
 	void setParent(Node* A);

@@ -35,6 +35,11 @@ Node::Node(const Node &a)
 	this->fScore = a.fScore;
 }
 
+bool Node::operator==(Node & obj)
+{
+	return this->getCoordinates()==obj.getCoordinates();
+}
+
 void Node::drawNode()
 {
 	glColor3f(0.0f, 0.7f, 0.95f);
@@ -72,17 +77,17 @@ int Node::getY()
 
 std::list <Node*> Node::getNeighbours()
 {
-	//8 way move direction. Working but not stresstested, possible errors
-	/*int direction[8][2] =
+	//8 way move direction. 
+	int direction[8][2] =
 	{
 		{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}
-	};*/
+	};
 
 	//4 way move direction
-	int direction[4][2] =
+	/*int direction[4][2] =
 	{
 		{-1,0},{0,1},{1,0},{0,-1}
-	};
+	};*/
 	std::list <Node*> previous_neighbours;
 	if (parent!= NULL)
 	{
@@ -91,40 +96,48 @@ std::list <Node*> Node::getNeighbours()
 
 	for (int i = 0; i < sizeof(direction)/(2*sizeof(int)); i++)
 	{
+		//check cornercrossing
+		if (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1))
+			|| intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ - 1))
+			|| intersect(std::make_pair(x_, y_ - 1)) && intersect(std::make_pair(x_ - 1, y_))
+			|| intersect(std::make_pair(x_ - 1, y_)) && intersect(std::make_pair(x_, y_ + 1)))
+		{
+			continue;
+		}
+
 		Node *tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
-		graph.push_back(tmp);  //all heap alloc instances are deleted looping through graph after path is found 
+		graph.push_back(tmp);  //all heap alloc instances are deleted looping through graph after path is found
+
 		if (goal.getCoordinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
 		{
 			neighbours.push_back(tmp);
 			return this->neighbours;
 		}
-		else if (!intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))) //check walls
+		else if ((x_ + direction[i][0] >= 0 && y_ + direction[i][1] >= 0)  //check borders
+			&& x_ + direction[i][0] <= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
+			&& y_ + direction[i][1] <= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale()
+			&& !intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1])))  //check walls
 		{
-			if ((x_ + direction[i][0] >= 0 && y_ + direction[i][1]>=0)  //check borders
-				&& x_ + direction[i][0] <= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
-				&& y_ + direction[i][1] <= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
+			if (parent == NULL)
 			{
-				if (parent == NULL)
-				{
-					neighbours.push_back(tmp);
-				}
-				// if tmp is not present in parent node's neighbours - create new neighbour node 
-				// otherwise - splice neighbour address from parent to this
-				else if (std::find_if(previous_neighbours.begin(), previous_neighbours.end(), 
-					[&](Node* p) { return p->getCoordinates() == tmp->getCoordinates(); }) == previous_neighbours.end())
-				{
-					neighbours.push_back(tmp);
-				}
-				else
-				{
-					//splice neighbour node address from parent to child and delete in parent node
-					neighbours.splice(neighbours.end(), previous_neighbours, 
-						std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
-						[&](Node* p) { return p->getCoordinates() == tmp->getCoordinates(); }));
+				neighbours.push_back(tmp);
+			}
+			// if tmp is not present in parent node's neighbours - create new neighbour node 
+			// otherwise - splice neighbour address from parent to this
+			else if (std::find_if(previous_neighbours.begin(), previous_neighbours.end(), 
+				[&](Node* p) { return *p == *tmp; }) == previous_neighbours.end())
+			{
+				neighbours.push_back(tmp);
+			}
+			else
+			{
+				//splice neighbour node address from parent to child and delete in parent node
+				neighbours.splice(neighbours.end(), previous_neighbours, 
+					std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
+					[&](Node* p) { return *p == *tmp; }));
 
-					delete tmp; //avoid dublicating nodes
-					graph.pop_back();
-				}
+				delete tmp; //avoid dublicating nodes
+				graph.pop_back();
 			}
 		}
 	}
@@ -169,28 +182,4 @@ float Node::getHscore()
 float Node::getFscore()
 {
 	return this->fScore;
-}
-
-
-
-void Node::deleteGraph()
-{
-	if (!(this->neighbours.empty()))
-	{
-		for (auto n : neighbours)
-		{
-			if (n != parent)
-			{
-				delete n;
-			}
-		}
-	}
-	if (this->parent != NULL)
-	{
-		parent->deleteGraph();
-	}
-	else
-	{
-		delete this;
-	}
 }
