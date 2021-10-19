@@ -147,10 +147,11 @@ void render()
 	field.drawField();
 	ui.drawAlgName(25, 40);
 	ui.drawNodeCount(35, 100, pathfind.numNodesVisited);
-	ui.drawCostCount(35, 175, pathfind.numCostAssign);
+	ui.drawPathLength(80, 175, pathfind.getPath().size());
 	ui.drawKeyGuide(-200, 60);
+	ui.drawMouseKeyGuide(-235, 200);
 	ui.drawActiveHeuristic(300, 50, func);
-	ui.drawRenderSpeed(300, 125, slowmode);
+	ui.drawRenderSpeed(280, 125, slowmode);
 
 	glFlush();
 }

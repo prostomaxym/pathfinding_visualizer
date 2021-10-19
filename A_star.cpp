@@ -12,7 +12,6 @@
 A_star::A_star()
 {
 	numNodesVisited = 0;
-	numCostAssign = 0;
 	pq.clear();
 	path.clear();
 	pq.push_back(&start);
@@ -23,7 +22,6 @@ A_star::A_star()
 void A_star::rebuild()
 {
 	numNodesVisited = 0;
-	numCostAssign = 0;
 	pq.clear();
 	path.clear();
 	start.clear();
@@ -61,10 +59,9 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 		for (auto n : current_node->getNeighbours())
 		{
 			numNodesVisited++;
-			float tentative_gScore = current_node->getGscore() + 10; //1 - default graph weight
+			float tentative_gScore = current_node->getGscore() + 1; //1 - default graph weight
 			if (tentative_gScore < n->getGscore())
 			{
-				numCostAssign++;
 				n->setParent(current_node);
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));

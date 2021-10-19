@@ -33,17 +33,17 @@ void Text::drawNodeCount(float x, float y, int count)
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, std::to_string(count));
 }
 
-void Text::drawCostCount(float x, float y, int count)
+void Text::drawPathLength(float x, float y, int count)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
-	glRectf(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 40, x + 270, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+	glRectf(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 40, x + 120, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
 
 	glColor3f(0.2f, 0.2f, 0.2f);
 	this->glWrite(x, glutGet(GLUT_WINDOW_HEIGHT) - y,
-		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Cost function assignments:");
+		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Path length:");
 
 	glColor3f(0.4f, 0.3f, 0.8f);
-	this->glWrite(x + 100, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
+	this->glWrite(x + 50, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, std::to_string(count));
 }
 
@@ -97,6 +97,28 @@ void Text::drawKeyGuide(int x, int y)
 		(int*)GLUT_BITMAP_HELVETICA_18, "5 - h(x)=0 heuristic");
 }
 
+void Text::drawMouseKeyGuide(int x, int y)
+{
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) / 2 + x - 80, glutGet(GLUT_WINDOW_HEIGHT) - y - 10,
+		glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 500, glutGet(GLUT_WINDOW_HEIGHT) - y + 25);
+
+	glColor3f(0.2f, 0.2f, 0.2f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x - 75, glutGet(GLUT_WINDOW_HEIGHT) - y,
+		(int*)GLUT_BITMAP_HELVETICA_18, "Mouse:");
+
+	glColor3f(0.1f, 0.1f, 0.9f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x, glutGet(GLUT_WINDOW_HEIGHT) - y,
+		(int*)GLUT_BITMAP_HELVETICA_18, "LMB - Place start");
+
+	glColor3f(0.1f, 0.1f, 0.9f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 175, glutGet(GLUT_WINDOW_HEIGHT) - y,
+		(int*)GLUT_BITMAP_HELVETICA_18, "MMB - Place wall");
+
+	glColor3f(0.1f, 0.1f, 0.9f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 350, glutGet(GLUT_WINDOW_HEIGHT) - y,
+		(int*)GLUT_BITMAP_HELVETICA_18, "RMB - Place goal");
+}
 void Text::drawActiveHeuristic(int x, int y, HeuristicFunc h)
 {
 	std::string enumStr;
