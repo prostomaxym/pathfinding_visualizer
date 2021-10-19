@@ -5,7 +5,6 @@ void PressKeyHandler(unsigned char key, int x, int y)
 	if (finding && key == 'r')
 	{
 		resetGraph();
-		pathfind.rebuild();
 		finding = false;
 	}
 	else 
@@ -23,37 +22,30 @@ void PressKeyHandler(unsigned char key, int x, int y)
 			break;
 		case 'a':
 			resetGraph();
-			pathfind.rebuild();
 			finding = true;
 			break;
 		case 'r':
 			resetGraph();
-			pathfind.rebuild();
 			finding = false;
 			break;
 		case 49:
 			resetGraph();
-			pathfind.rebuild();
 			func = HeuristicFunc::manhattan;
 			break;
 		case 50:
 			resetGraph();
-			pathfind.rebuild();
 			func = HeuristicFunc::euclidean;
 			break;
 		case 51:
 			resetGraph();
-			pathfind.rebuild();
 			func = HeuristicFunc::octile;
 			break;
 		case 52:
 			resetGraph();
-			pathfind.rebuild();
 			func = HeuristicFunc::chebyshev;
 			break;
 		case 53:
 			resetGraph();
-			pathfind.rebuild();
 			func = HeuristicFunc::hZero;
 			break;
 		}
@@ -67,7 +59,6 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 		finding = false;
 		resetGraph();
 		wall.clear();
-		pathfind.rebuild();
 		start.setCoordinates(0, 0);
 		goal.setCoordinates(0, 0);
 		if (fullscreen)

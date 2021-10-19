@@ -2,14 +2,15 @@
 
 #include "main.h"
 
+
 Node::Node()
 {
 	this->x_ = 0;
 	this->y_ = 0;
 
-	this->parent=nullptr;
-	this->gScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
-	this->hScore = 9999.0f;  //much bigger than  graph max distance - 9999.0f instead of INF
+	this->parent = nullptr;
+	this->gScore = 9999.0f;  //much bigger than graph max distance - 9999.0f instead of INF
+	this->hScore = 9999.0f;  //much bigger than graph max distance - 9999.0f instead of INF
 	this->fScore=gScore+hScore;
 }
 
@@ -35,9 +36,9 @@ Node::Node(const Node &a)
 	this->fScore = a.fScore;
 }
 
-bool Node::operator==(Node & obj)
+bool Node::operator==(const Node& obj)
 {
-	return this->getCoordinates()==obj.getCoordinates();
+	return (this->x_==obj.x_) && (this->y_ == obj.y_);
 }
 
 void Node::drawNode()
@@ -53,6 +54,16 @@ void Node::drawNode(float r, float g, float b)
 	glRectf(/*x1 point*/this->x_ * field.getScale(), /*y1 point*/this->y_ * field.getScale(),
 		/*x2 point*/(this->x_ + 1) * field.getScale(), /*y2 point*/(this->y_ + 1) * field.getScale());
 }
+
+void Node::clear()
+{
+	this->parent = nullptr;
+	this->neighbours.clear();
+	this->gScore = 9999.0f;
+	this->hScore = 9999.0f;
+	this->fScore = gScore + hScore;
+}
+
 void Node::setCoordinates(int x, int y)
 {
 	this->x_ = x;
@@ -88,16 +99,28 @@ std::list <Node*> Node::getNeighbours()
 	{
 		{-1,0},{0,1},{1,0},{0,-1}
 	};*/
-	std::list <Node*> previous_neighbours;
-	if (parent!= NULL)
-	{
-		previous_neighbours = std::list<Node*>(parent->neighbours);
-	}
 
 	for (int i = 0; i < sizeof(direction)/(2*sizeof(int)); i++)
 	{
+		//goal reached
+		if (goal.getCoordinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
+		{
+			Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
+			neighbours.push_back(tmp);
+			graph.push_back(tmp);
+			return this->neighbours;
+		}
+		//check borders and walls
+		if ((x_ + direction[i][0] < 0) 
+			|| (y_ + direction[i][1] < 0)  
+			|| (x_ + direction[i][0] > glutGet(GLUT_WINDOW_WIDTH) / field.getScale())
+			|| (y_ + direction[i][1] > glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
+			|| (intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))))
+		{
+			continue;
+		}
 		//check cornercrossing
-		if (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1))
+		else if (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1))
 			|| intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ - 1))
 			|| intersect(std::make_pair(x_, y_ - 1)) && intersect(std::make_pair(x_ - 1, y_))
 			|| intersect(std::make_pair(x_ - 1, y_)) && intersect(std::make_pair(x_, y_ + 1)))
@@ -105,40 +128,22 @@ std::list <Node*> Node::getNeighbours()
 			continue;
 		}
 
-		Node *tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
-		graph.push_back(tmp);  //all heap alloc instances are deleted looping through graph after path is found
-
-		if (goal.getCoordinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
+		//all heap alloc instances are deleted looping through graph after path is found
+		Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
+		
+		//if node already exists in grapth -  skip creation
+		auto alreadyExistIter = std::find_if(graph.begin(), graph.end(),
+			[&](const Node* p) {return *tmp == *p; });
+		if (alreadyExistIter != graph.end())
+		{
+			delete tmp;
+			continue;
+		}
+		// if tmp is not already exist in graph - create new neighbour node 
+		else
 		{
 			neighbours.push_back(tmp);
-			return this->neighbours;
-		}
-		else if ((x_ + direction[i][0] >= 0 && y_ + direction[i][1] >= 0)  //check borders
-			&& x_ + direction[i][0] <= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
-			&& y_ + direction[i][1] <= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale()
-			&& !intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1])))  //check walls
-		{
-			if (parent == NULL)
-			{
-				neighbours.push_back(tmp);
-			}
-			// if tmp is not present in parent node's neighbours - create new neighbour node 
-			// otherwise - splice neighbour address from parent to this
-			else if (std::find_if(previous_neighbours.begin(), previous_neighbours.end(), 
-				[&](Node* p) { return *p == *tmp; }) == previous_neighbours.end())
-			{
-				neighbours.push_back(tmp);
-			}
-			else
-			{
-				//splice neighbour node address from parent to child and delete in parent node
-				neighbours.splice(neighbours.end(), previous_neighbours, 
-					std::find_if(previous_neighbours.begin(), previous_neighbours.end(),
-					[&](Node* p) { return *p == *tmp; }));
-
-				delete tmp; //avoid dublicating nodes
-				graph.pop_back();
-			}
+			graph.push_back(tmp);
 		}
 	}
 	return this->neighbours;

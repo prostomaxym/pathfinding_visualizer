@@ -14,6 +14,7 @@ class A_star
 public:
 	int numNodesVisited;  //number of nodes visited
 	int numCostAssign;  //number of cost function assignments done
+
 	A_star();
 	void rebuild();
 

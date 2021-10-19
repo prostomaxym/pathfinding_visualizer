@@ -44,9 +44,9 @@ bool intersect(std::pair <int, int> coord)
 {
 	if (start.getCoordinates() == coord) return true;
 	if (goal.getCoordinates() == coord) return true;
-	for (size_t i = 0; i < wall.size(); i++)
+	for (auto n : wall)
 	{
-		if (wall[i].getCoordinates() == coord) return true;
+		if (n.getCoordinates() == coord) return true;
 	}
 	return false;
 }
@@ -74,11 +74,9 @@ void resetGraph()
 	{
 		delete graph.back(), graph.pop_back();
 	}
+	pathfind.rebuild();
 }
 
-//TODO 
-//review A* core, neighbours, fix failure case
-//fix counter
 int main()
 {
 	srand(time(NULL));

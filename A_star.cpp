@@ -13,8 +13,8 @@ A_star::A_star()
 {
 	numNodesVisited = 0;
 	numCostAssign = 0;
-	path.clear();
 	pq.clear();
+	path.clear();
 	pq.push_back(&start);
 	start.setGscore(0);
 	start.setFscore();
@@ -26,6 +26,8 @@ void A_star::rebuild()
 	numCostAssign = 0;
 	pq.clear();
 	path.clear();
+	start.clear();
+	goal.clear();
 	pq.push_back(&start);
 	start.setGscore(0);
 	start.setFscore();
@@ -59,7 +61,7 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 		for (auto n : current_node->getNeighbours())
 		{
 			numNodesVisited++;
-			float tentative_gScore = current_node->getGscore() + 1; //1 - default graph weight
+			float tentative_gScore = current_node->getGscore() + 10; //1 - default graph weight
 			if (tentative_gScore < n->getGscore())
 			{
 				numCostAssign++;
@@ -67,8 +69,7 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));
 				n->setFscore();
-				if (std::find_if(pq.begin(), pq.end(), //check if node is not present in heap
-				[&](Node *p) { return *p==*n; }) == pq.end())
+				if (std::find_if(pq.begin(), pq.end(), [&](const Node* p) {return *n == *p; }) == pq.end())
 				{
 					pq.push_back(n);
 					std::push_heap(pq.begin(), pq.end(), compare_fScore);
