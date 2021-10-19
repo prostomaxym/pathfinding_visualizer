@@ -68,6 +68,14 @@ void generateRandomWalls(int number)
 	}
 }
 
+void resetGraph()
+{
+	while (!graph.empty())
+	{
+		delete graph.back(), graph.pop_back();
+	}
+}
+
 //TODO 
 //review A* core, neighbours, fix failure case
 //fix counter
@@ -101,28 +109,44 @@ void render()
 	glClearColor(0.95f, 0.95f, 0.95f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (!graph.empty())  //draw visited nodes
+	//draw visited nodes
+	if (!graph.empty())  
 	{
 		for (auto n : graph)
 		{
 			n->drawNode();
 		}
 	}
-	for (size_t i = 0; i < wall.size(); i++)  //draw wall
+
+	//draw wall
+	for (size_t i = 0; i < wall.size(); i++)  
 	{
 		wall[i].drawNode();
 	}
 	start.drawNode();
 	goal.drawNode();
-	if (!(pathfind.getPath()).empty() && finding==false)  //draw path
+
+	//draw path
+	if (!(pathfind.getPath()).empty() && finding == false)  
 	{
 		for (auto n : pathfind.getPath())
 		{
 			n->drawNode(1.0f, 1.0f, 0.0f);
 		}
+		glLineWidth(5.0f);
+		glBegin(GL_LINE_STRIP);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f((start.getX() + 0.5) * field.getScale(), (start.getY() + 0.5) * field.getScale());
+		for (auto n : pathfind.getPath())
+		{
+			glVertex2f((n->getX() + 0.5) * field.getScale(), (n->getY() + 0.5) * field.getScale());
+		}
+		glVertex2f((goal.getX() + 0.5) * field.getScale(), (goal.getY() + 0.5) * field.getScale());
+		glEnd();
+		glLineWidth(1.0f);
 	}
-	field.drawField();
 
+	field.drawField();
 	ui.drawAlgName(25, 40);
 	ui.drawNodeCount(35, 100, pathfind.numNodesVisited);
 	ui.drawCostCount(35, 175, pathfind.numCostAssign);

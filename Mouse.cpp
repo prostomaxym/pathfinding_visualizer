@@ -11,6 +11,8 @@ void ClickMouseHandler(int button, int state, int x, int y)
 		glutMotionFunc(0);
 		if (state == GLUT_DOWN && !intersect(mouseGet))
 		{
+			resetGraph();
+			pathfind.rebuild();
 			start.setCoordinates(x / field.getScale(), y / field.getScale());
 		}
 	}
@@ -19,6 +21,8 @@ void ClickMouseHandler(int button, int state, int x, int y)
 		glutMotionFunc(0);
 		if (state == GLUT_DOWN && !intersect(mouseGet))
 		{
+			resetGraph();
+			pathfind.rebuild();
 			goal.setCoordinates(x / field.getScale(), y / field.getScale());
 		}
 	}
@@ -26,6 +30,8 @@ void ClickMouseHandler(int button, int state, int x, int y)
 	{
 		if (state == GLUT_DOWN && !intersect(mouseGet))
 		{
+			resetGraph();
+			pathfind.rebuild();
 			wall.push_back(WallNode(x / field.getScale(), y / field.getScale()));
 			glutMotionFunc(MotionMouseHandler);
 		}

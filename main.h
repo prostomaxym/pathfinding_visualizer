@@ -47,4 +47,5 @@ extern std::list <Node*> graph;
 
 bool intersect(std::pair <int, int> coord);
 void generateRandomWalls(int number);
+void resetGraph();
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_

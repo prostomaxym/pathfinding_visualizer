@@ -1,13 +1,5 @@
 #include "Keyboard.h"
 
-void resetGraph()
-{
-	while (!graph.empty())
-	{
-		delete graph.back(), graph.pop_back();
-	}
-}
-
 void PressKeyHandler(unsigned char key, int x, int y)
 {
 	if (finding && key == 'r')
