@@ -131,11 +131,12 @@ std::list <Node*> Node::getNeighbours()
 		//all heap alloc instances are deleted looping through graph after path is found
 		Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
 		
-		//if node already exists in grapth -  skip creation
+		//if node already exists in grapth -  skip creation, rewrite from graph to n->neighbours
 		auto alreadyExistIter = std::find_if(graph.begin(), graph.end(),
 			[&](const Node* p) {return *tmp == *p; });
 		if (alreadyExistIter != graph.end())
 		{
+			neighbours.push_back(*alreadyExistIter);
 			delete tmp;
 			continue;
 		}

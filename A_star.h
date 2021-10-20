@@ -9,6 +9,8 @@
 
 #include "Node.h"
 
+float d(Node* A, Node* B);
+
 class A_star
 {
 public:

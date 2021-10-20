@@ -133,7 +133,7 @@ void render()
 		}
 		glLineWidth(5.0f);
 		glBegin(GL_LINE_STRIP);
-		glColor3f(0.0f, 0.0f, 0.0f);
+		glColor3f(0.5f, 0.0f, 0.5f);
 		glVertex2f((start.getX() + 0.5) * field.getScale(), (start.getY() + 0.5) * field.getScale());
 		for (auto n : pathfind.getPath())
 		{

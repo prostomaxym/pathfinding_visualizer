@@ -1,9 +1,8 @@
 #ifndef PATHFINDING_VISUALIZER_NODE_H_
 #define PATHFINDING_VISUALIZER_NODE_H_
 
-#include <utility>
 #include <list>
-
+#include <utility>
 
 class Node
 {

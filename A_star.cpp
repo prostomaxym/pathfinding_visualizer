@@ -9,6 +9,19 @@
 #include "Node.h"
 #include "main.h"
 
+//get transition cost, 1.4f(sqrt(2)) for diagonal, 1.0f for direct
+float d(Node* A, Node* B)
+{
+	if (A->getX() + 1 == B->getX() && A->getY() + 1 == B->getY()
+		|| A->getX() + 1 == B->getX() && A->getY() - 1 == B->getY()
+		|| A->getX() - 1 == B->getX() && A->getY() - 1 == B->getY()
+		|| A->getX() - 1 == B->getX() && A->getY() + 1 == B->getY())
+	{
+		return 1.4f;
+	}
+	else return 1.0f;
+}
+
 A_star::A_star()
 {
 	numNodesVisited = 0;
@@ -58,10 +71,11 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 
 		for (auto n : current_node->getNeighbours())
 		{
-			numNodesVisited++;
-			float tentative_gScore = current_node->getGscore() + 1; //1 - default graph weight
+			//d - transition cost, sqrt(2) for diagonal, 1.0f otherwise
+			float tentative_gScore = current_node->getGscore() + d(current_node, n);  
 			if (tentative_gScore < n->getGscore())
 			{
+				numNodesVisited++;
 				n->setParent(current_node);
 				n->setGscore(tentative_gScore);
 				n->setHscore(h(goal, n));
@@ -73,7 +87,7 @@ bool A_star::tick(Node* start, Node* goal, float (*h)(Node*, Node*))
 				}
 			}
 		}
-		return true;
+		return true; //(return true) makes tick based a* version, delete return to get real time a* alg
 	}
 	return false;
 }

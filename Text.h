@@ -2,6 +2,7 @@
 #define PATHFINDING_VISUALIZER_TEXT_H_
 
 #include <string>
+
 #include "main.h"
 
 class Text
