@@ -110,23 +110,21 @@ std::list <Node*> Node::getNeighbours()
 			graph.push_back(tmp);
 			return this->neighbours;
 		}
+
 		//check borders and walls
-		if ((x_ + direction[i][0] < 0) 
-			|| (y_ + direction[i][1] < 0)  
-			|| (x_ + direction[i][0] > glutGet(GLUT_WINDOW_WIDTH) / field.getScale())
-			|| (y_ + direction[i][1] > glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
+		if ((x_ + direction[i][0] < 0)
+			|| (y_ + direction[i][1] < 0)
+			|| (x_ + direction[i][0] >= glutGet(GLUT_WINDOW_WIDTH) / field.getScale())
+			|| (y_ + direction[i][1] >= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
 			|| (intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))))
-		{
-			continue;
-		}
+				continue;
+
 		//check cornercrossing
 		else if (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1))
 			|| intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ - 1))
 			|| intersect(std::make_pair(x_, y_ - 1)) && intersect(std::make_pair(x_ - 1, y_))
 			|| intersect(std::make_pair(x_ - 1, y_)) && intersect(std::make_pair(x_, y_ + 1)))
-		{
-			continue;
-		}
+				continue;
 
 		//all heap alloc instances are deleted looping through graph after path is found
 		Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);

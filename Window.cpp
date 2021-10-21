@@ -26,7 +26,7 @@ Window::Window(int w, int h, std::string winname)
 	gluOrtho2D(0, this->width, 0, this->height);
 }
 
-void Window::enterFullscreen(int w, int h)
+void Window::leaveFullscreen(int w, int h)
 {
 	glutReshapeWindow(w, h);
 	glutPositionWindow(50, 50);
@@ -34,7 +34,7 @@ void Window::enterFullscreen(int w, int h)
 	gluOrtho2D(0, w, 0, h);
 }
 
-void Window::leaveFullscreen(int w, int h)
+void Window::enterFullscreen(int w, int h)
 {
 	glutReshapeWindow(w, h);
 	glutPositionWindow(0, 0);

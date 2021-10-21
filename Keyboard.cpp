@@ -14,9 +14,12 @@ void PressKeyHandler(unsigned char key, int x, int y)
 		case 'e':
 			resetGraph();
 			wall.clear();
+			walls.clear();
+			reserveWalls();
 			break;
 		case 'w':
 			wall.clear();
+			walls.clear();
 			generateRandomWalls(kNumRandWall);
 			resetGraph();
 			break;
@@ -59,20 +62,24 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 		finding = false;
 		resetGraph();
 		wall.clear();
+		walls.clear();
 		start.setCoordinates(0, 0);
 		goal.setCoordinates(0, 0);
 		if (fullscreen)
 		{
 			fullscreen = false;
-			window.enterFullscreen(kWidth, kHeight);
+			window.leaveFullscreen(kWidth, kHeight);
 			field.resizeField(kWidth, kHeight);
+			reserveWalls(kWidth, kHeight);
 		}
 		else
 		{
 			fullscreen = true;
-			window.leaveFullscreen(kFullWidth, kFullHeight);
-			field.resizeField(kFullWidth, kFullHeight);
+			window.enterFullscreen(kFullWidth, kFullHeight);
+			field.resizeField(kFullWidth, kFullHeight);	
+			reserveWalls(kFullWidth, kFullHeight);
 		}
+		
 	}
 
 	if (key == 's')

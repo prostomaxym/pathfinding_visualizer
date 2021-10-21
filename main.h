@@ -40,12 +40,15 @@ extern Window window;
 extern Field field;
 extern StartNode start;
 extern GoalNode goal;
-extern std::vector <WallNode> wall;
+extern std::vector <std::vector <WallNode>> wall;
+extern std::list <WallNode*> walls;
 extern A_star pathfind;
 extern std::list <Node*> graph;
 
 
 bool intersect(std::pair <int, int> coord);
+void reserveWalls();
+void reserveWalls(int glutWinW, int glutwinH);
 void generateRandomWalls(int number);
 void resetGraph();
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_

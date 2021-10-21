@@ -34,7 +34,8 @@ Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
 StartNode start;
 GoalNode goal;
-std::vector <WallNode> wall;
+std::vector <std::vector <WallNode>> wall;
+std::list <WallNode*> walls;
 A_star pathfind;
 std::list <Node*> graph;
 HeuristicFunc func = HeuristicFunc::manhattan;
@@ -42,27 +43,52 @@ Text ui;
 
 bool intersect(std::pair <int, int> coord)
 {
+	if (coord.first < 0 || coord.first >= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
+		|| coord.second < 0 || coord.second >= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
+		return true;
 	if (start.getCoordinates() == coord) return true;
 	if (goal.getCoordinates() == coord) return true;
-	for (auto n : wall)
-	{
-		if (n.getCoordinates() == coord) return true;
-	}
+	if (wall[coord.second][coord.first].getCoordinates() == coord) return true;
 	return false;
 }
 
+void reserveWalls()
+{
+	int ysize = glutGet(GLUT_WINDOW_HEIGHT) / field.getScale();
+	int xsize = glutGet(GLUT_WINDOW_WIDTH) / field.getScale();
+	wall.resize(ysize);
+	for (size_t i = 0; i < wall.size(); i++)
+	{
+		wall[i].resize(xsize);
+	}
+}
+
+void reserveWalls(int glutWinW, int glutwinH)
+{
+	int ysize = glutwinH / field.getScale();
+	int xsize = glutWinW / field.getScale();
+	wall.resize(ysize);
+	for (size_t i = 0; i < wall.size(); i++)
+	{
+		wall[i].resize(xsize);
+	}
+}
+
+
 void generateRandomWalls(int number)
 {
+	reserveWalls();
+	int ysize = glutGet(GLUT_WINDOW_HEIGHT) / field.getScale();
+	int xsize = glutGet(GLUT_WINDOW_WIDTH) / field.getScale();
 	int x, y;
-	std::pair <int, int> coord;
 	for (int i = 0; i < number; i++)
 	{
-		x = (rand() % glutGet(GLUT_WINDOW_WIDTH)) / field.getScale();
-		y = (rand() % glutGet(GLUT_WINDOW_HEIGHT)) / field.getScale();
-		coord = std::make_pair(x, y);
-		if (!intersect(coord))
+		x = rand() % xsize;
+		y = rand() % ysize;
+		if (wall[y][x].getCoordinates() != std::make_pair(x, y))
 		{
-			wall.push_back(WallNode(x, y));
+			wall[y][x].setCoordinates(x, y);
+			walls.push_back(&wall[y][x]);
 		}
 		else i--;
 	}
@@ -77,10 +103,14 @@ void resetGraph()
 	pathfind.rebuild();
 }
 
+// TODO collision check refactor
+
 int main()
 {
 	srand(time(NULL));
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+
+	reserveWalls();
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -117,9 +147,9 @@ void render()
 	}
 
 	//draw wall
-	for (size_t i = 0; i < wall.size(); i++)  
+	for (auto n: walls)  
 	{
-		wall[i].drawNode();
+		n->drawNode();
 	}
 	start.drawNode();
 	goal.drawNode();

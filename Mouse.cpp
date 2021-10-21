@@ -29,7 +29,8 @@ void ClickMouseHandler(int button, int state, int x, int y)
 		if (state == GLUT_DOWN && !intersect(mouseGet))
 		{
 			resetGraph();
-			wall.push_back(WallNode(x / field.getScale(), y / field.getScale()));
+			wall[y / field.getScale()][x / field.getScale()].setCoordinates(x / field.getScale(), y / field.getScale());
+			walls.push_back(&wall[y / field.getScale()][x / field.getScale()]);
 			glutMotionFunc(MotionMouseHandler);
 		}
 	}
@@ -42,6 +43,7 @@ void MotionMouseHandler(int x, int y)
 
 	if (!intersect(mouseGet))
 	{
-		wall.push_back(WallNode(x / field.getScale(), y / field.getScale()));
+		wall[y / field.getScale()][x / field.getScale()].setCoordinates(x / field.getScale(), y / field.getScale());
+		walls.push_back(&wall[y / field.getScale()][x / field.getScale()]);
 	}
 }
