@@ -1,7 +1,6 @@
 #include <ctime>
 #include <Windows.h>
 
-#include <random>
 #include <vector>
 
 #include <glut.h>
@@ -9,11 +8,13 @@
 #include "main.h"
 #include "Field.h"
 #include "GoalNode.h"
+#include "Heuristic.h"
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "StartNode.h"
 #include "Text.h"
 #include "WallNode.h"
+#include "Walls.h"
 #include "Window.h"
 
 //Resolution related variables
@@ -25,85 +26,32 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
 int kNumRandWall = 750;  //number of random wall nodes
-int frametime = 1;  //frametime in milliseconds
+int frametime = 1;  //delay between frames in milliseconds
 int cell_size = 20;  //length of single field cell
 bool finding = false;  //pathfinding state
 bool slowmode = false;  //toggle update time 1X-5X
+bool allowDiagonal = true;  // allow diagonal movement
 
 Window window(kWidth, kHeight, "Pathfinding visualizer");
 Field field(kWidth, kHeight, cell_size);
 StartNode start;
 GoalNode goal;
-std::vector <std::vector <WallNode>> wall;
-std::list <WallNode*> walls;
+std::vector <std::vector <WallNode>> wall;  //2d wall container for fast collision check
+std::list <WallNode*> walls;  //1d wall ptr list for fast node draw
 A_star pathfind;
 std::list <Node*> graph;
 HeuristicFunc func = HeuristicFunc::manhattan;
 Text ui;
 
-bool intersect(std::pair <int, int> coord)
-{
-	if (coord.first < 0 || coord.first >= glutGet(GLUT_WINDOW_WIDTH) / field.getScale()
-		|| coord.second < 0 || coord.second >= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
-		return true;
-	if (start.getCoordinates() == coord) return true;
-	if (goal.getCoordinates() == coord) return true;
-	if (wall[coord.second][coord.first].getCoordinates() == coord) return true;
-	return false;
-}
-
-void reserveWalls()
-{
-	int ysize = glutGet(GLUT_WINDOW_HEIGHT) / field.getScale();
-	int xsize = glutGet(GLUT_WINDOW_WIDTH) / field.getScale();
-	wall.resize(ysize);
-	for (size_t i = 0; i < wall.size(); i++)
-	{
-		wall[i].resize(xsize);
-	}
-}
-
-void reserveWalls(int glutWinW, int glutwinH)
-{
-	int ysize = glutwinH / field.getScale();
-	int xsize = glutWinW / field.getScale();
-	wall.resize(ysize);
-	for (size_t i = 0; i < wall.size(); i++)
-	{
-		wall[i].resize(xsize);
-	}
-}
-
-
-void generateRandomWalls(int number)
-{
-	reserveWalls();
-	int ysize = glutGet(GLUT_WINDOW_HEIGHT) / field.getScale();
-	int xsize = glutGet(GLUT_WINDOW_WIDTH) / field.getScale();
-	int x, y;
-	for (int i = 0; i < number; i++)
-	{
-		x = rand() % xsize;
-		y = rand() % ysize;
-		if (wall[y][x].getCoordinates() != std::make_pair(x, y))
-		{
-			wall[y][x].setCoordinates(x, y);
-			walls.push_back(&wall[y][x]);
-		}
-		else i--;
-	}
-}
-
 void resetGraph()
 {
 	while (!graph.empty())
 	{
-		delete graph.back(), graph.pop_back();
+		delete graph.back(); 
+		graph.pop_back();
 	}
 	pathfind.rebuild();
 }
-
-// TODO collision check refactor
 
 int main()
 {
@@ -179,9 +127,10 @@ void render()
 	ui.drawNodeCount(35, 100, pathfind.numNodesVisited);
 	ui.drawPathLength(80, 175, pathfind.getPath().size());
 	ui.drawKeyGuide(-200, 60);
-	ui.drawMouseKeyGuide(-235, 200);
+	ui.drawMouseKeyGuide(-235, 225);
 	ui.drawActiveHeuristic(300, 50, func);
 	ui.drawRenderSpeed(280, 125, slowmode);
+	ui.drawAllowDiagonal(320, 200, allowDiagonal);
 
 	glFlush();
 }

@@ -1,5 +1,20 @@
 #include "Keyboard.h"
 
+#include <random>
+#include <list>
+#include <utility>
+
+#include <glut.h>
+
+#include "A_star.h"
+#include "Field.h"
+#include "Heuristic.h"
+#include "main.h"
+#include "Mouse.h"
+#include "WallNode.h"
+#include "Walls.h"
+#include "Window.h"
+
 void PressKeyHandler(unsigned char key, int x, int y)
 {
 	if (finding && key == 'r')
@@ -93,6 +108,18 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 		{
 			frametime *= 5;
 			slowmode = true;
+		}
+	}
+
+	if (key == 'd')
+	{
+		if (allowDiagonal)
+		{
+			allowDiagonal = false;
+		}
+		else
+		{
+			allowDiagonal = true;
 		}
 	}
 }

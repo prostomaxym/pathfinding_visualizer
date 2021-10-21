@@ -2,6 +2,8 @@
 
 #include <glut.h>
 
+#include "main.h"
+
 void Text::glWrite(float x, float y, int* font, std::string text)
 {
 	glRasterPos2f(x, y);
@@ -50,7 +52,7 @@ void Text::drawPathLength(float x, float y, int count)
 void Text::drawKeyGuide(int x, int y)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
-	glRectf(glutGet(GLUT_WINDOW_WIDTH) / 2 + x - 100, glutGet(GLUT_WINDOW_HEIGHT) - y - 110, 
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) / 2 + x - 100, glutGet(GLUT_WINDOW_HEIGHT) - y - 135, 
 		glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 450, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
 
 	glColor3f(0.2f, 0.2f, 0.2f);
@@ -76,6 +78,10 @@ void Text::drawKeyGuide(int x, int y)
 	glColor3f(0.1f, 0.1f, 0.9f);
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x, glutGet(GLUT_WINDOW_HEIGHT) - y - 100,
 		(int*)GLUT_BITMAP_HELVETICA_18, "F - Enter/Exit fullscreen");
+
+	glColor3f(0.1f, 0.1f, 0.9f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x, glutGet(GLUT_WINDOW_HEIGHT) - y - 125,
+		(int*)GLUT_BITMAP_HELVETICA_18, "D - Allow diagonal movement");
 
 	glColor3f(0.1f, 0.1f, 0.9f);
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) / 2 + x + 250, glutGet(GLUT_WINDOW_HEIGHT) - y,
@@ -170,4 +176,21 @@ void Text::drawRenderSpeed(int x, int y, bool slow)
 	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x + 50, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
 		(int*)GLUT_BITMAP_TIMES_ROMAN_24, mode);
 
+}
+
+void Text::drawAllowDiagonal(int x, int y, bool diag)
+{
+	std::string mode(diag ? "TRUE" : "FALSE");
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectf(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y - 35,
+		glutGet(GLUT_WINDOW_WIDTH) - x + 270, glutGet(GLUT_WINDOW_HEIGHT) - y + 24);
+
+	glColor3f(0.2f, 0.2f, 0.2f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x, glutGet(GLUT_WINDOW_HEIGHT) - y,
+		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "Allow diagonal movement");
+
+	glColor3f(0.4f, 0.3f, 1.0f);
+	this->glWrite(glutGet(GLUT_WINDOW_WIDTH) - x + 80, glutGet(GLUT_WINDOW_HEIGHT) - y - 30,
+		(int*)GLUT_BITMAP_TIMES_ROMAN_24, mode);
 }

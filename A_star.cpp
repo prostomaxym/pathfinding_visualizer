@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <list>
-#include <queue>
 #include <vector>
 
 #include <glut.h>

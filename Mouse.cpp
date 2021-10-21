@@ -1,5 +1,11 @@
 #include "Mouse.h"
 
+#include <utility>
+
+#include <glut.h>
+
+#include "main.h"
+#include "Walls.h"
 
 void ClickMouseHandler(int button, int state, int x, int y)
 {

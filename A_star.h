@@ -2,10 +2,7 @@
 #define PATHFINDING_VISUALIZER_ASTAR_H_
 
 #include <list>
-#include <queue>
 #include <vector>
-
-#include <glut.h>
 
 #include "Node.h"
 

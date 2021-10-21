@@ -1,8 +1,6 @@
 #ifndef PATHFINDING_VISUALIZER_HEURISTIC_H_
 #define PATHFINDING_VISUALIZER_HEURISTIC_H_
 
-#include <cmath>
-
 #include "Node.h"
 
 	float getDX(Node* A, Node* B);

@@ -162,6 +162,7 @@
     <ClCompile Include="StartNode.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="WallNode.cpp" />
+    <ClCompile Include="Walls.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +177,7 @@
     <ClInclude Include="StartNode.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="WallNode.h" />
+    <ClInclude Include="Walls.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

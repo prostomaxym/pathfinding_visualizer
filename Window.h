@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include <glut.h>
-
 class Window
 {
 public:

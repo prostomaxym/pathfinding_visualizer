@@ -1,5 +1,7 @@
 #include "Field.h"
 
+#include <glut.h>
+
 Field::Field()
 {
 	this->width = 1280;

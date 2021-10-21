@@ -13,7 +13,7 @@ public:
 	void drawNode() override;
 
 private:
-	const float r=0.0f, g=1.0f, b=0.0f;  // Node color
+	const float r = 0.0f, g = 1.0f, b = 0.0f;  // Node color
 };
 
 //extern StartNode startNode;

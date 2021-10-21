@@ -1,7 +1,7 @@
 #include "Node.h"
 
 #include "main.h"
-
+#include "Walls.h"
 
 Node::Node()
 {
@@ -11,7 +11,7 @@ Node::Node()
 	this->parent = nullptr;
 	this->gScore = 9999.0f;  //much bigger than graph max distance - 9999.0f instead of INF
 	this->hScore = 9999.0f;  //much bigger than graph max distance - 9999.0f instead of INF
-	this->fScore=gScore+hScore;
+	this->fScore = gScore+hScore;
 }
 
 Node::Node(int x, int y)
@@ -94,14 +94,9 @@ std::list <Node*> Node::getNeighbours()
 		{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}
 	};
 
-	//4 way move direction
-	/*int direction[4][2] =
-	{
-		{-1,0},{0,1},{1,0},{0,-1}
-	};*/
-
 	for (int i = 0; i < sizeof(direction)/(2*sizeof(int)); i++)
 	{
+		if (!allowDiagonal && ((i + 1) % 2 != 0)) continue;
 		//goal reached
 		if (goal.getCoordinates() == std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))
 		{
@@ -120,16 +115,17 @@ std::list <Node*> Node::getNeighbours()
 				continue;
 
 		//check cornercrossing
-		else if (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1))
-			|| intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ - 1))
-			|| intersect(std::make_pair(x_, y_ - 1)) && intersect(std::make_pair(x_ - 1, y_))
-			|| intersect(std::make_pair(x_ - 1, y_)) && intersect(std::make_pair(x_, y_ + 1)))
+		else if (((i+1) % 2!=0)  //skip non diagonal nodes
+			&& ((intersect(std::make_pair(x_ - 1, y_)) && intersect(std::make_pair(x_, y_ - 1)))
+			|| (intersect(std::make_pair(x_, y_ + 1)) && intersect(std::make_pair(x_ - 1, y_)))
+			|| (intersect(std::make_pair(x_ + 1, y_)) && intersect(std::make_pair(x_, y_ + 1)))
+			|| (intersect(std::make_pair(x_, y_ - 1)) && intersect(std::make_pair(x_ + 1, y_ )))))
 				continue;
 
 		//all heap alloc instances are deleted looping through graph after path is found
 		Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
 		
-		//if node already exists in grapth -  skip creation, rewrite from graph to n->neighbours
+		//if node already exists in grapth -  skip creation, rewrite pointer from graph to n->neighbours
 		auto alreadyExistIter = std::find_if(graph.begin(), graph.end(),
 			[&](const Node* p) {return *tmp == *p; });
 		if (alreadyExistIter != graph.end())

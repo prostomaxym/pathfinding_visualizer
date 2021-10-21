@@ -14,7 +14,8 @@ public:
 	void drawKeyGuide(int x, int y); //Bind to top center 
 	void drawMouseKeyGuide(int x, int y); //Bind to top center 
 	void drawActiveHeuristic(int x, int y, HeuristicFunc h); //Bind to top right  corner
-	void drawRenderSpeed(int x, int y, bool slow); ////Bind to top right corner
+	void drawRenderSpeed(int x, int y, bool slow); //Bind to top right corner
+	void drawAllowDiagonal(int x, int y, bool diag); //Bind to top right corner
 
 private:
 	void glWrite(float x, float y, int* font, std::string text);

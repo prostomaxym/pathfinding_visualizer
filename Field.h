@@ -1,13 +1,6 @@
 #ifndef PATHFINDING_VISUALIZER_FIELD_H_
 #define PATHFINDING_VISUALIZER_FIELD_H_
 
-#include <glut.h>
-
-//forward declaration
-class StartNode;  
-class GoalNode;
-class WallNode;
-
 class Field
 {
 public:

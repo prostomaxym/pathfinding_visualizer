@@ -1,5 +1,7 @@
 #include "Heuristic.h"
 
+#include <cmath>
+
 float getDX(Node* A, Node* B)
 {
 	return abs(A->getX() - B->getX());

@@ -34,7 +34,8 @@ extern int kNumRandWall;  //number of random wall nodes
 extern int frametime;  //frametime in milliseconds
 extern int cell_size;  //length of single field cell
 extern bool finding;  //pathfinding state
-extern bool slowmode; //toggle render speed 1X - 5X
+extern bool slowmode;  //toggle render speed 1X - 5X
+extern bool allowDiagonal;  // allow diagonal movement
 
 extern Window window;
 extern Field field;
@@ -45,10 +46,5 @@ extern std::list <WallNode*> walls;
 extern A_star pathfind;
 extern std::list <Node*> graph;
 
-
-bool intersect(std::pair <int, int> coord);
-void reserveWalls();
-void reserveWalls(int glutWinW, int glutwinH);
-void generateRandomWalls(int number);
 void resetGraph();
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_
