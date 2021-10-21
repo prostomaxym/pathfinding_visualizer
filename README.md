@@ -9,7 +9,7 @@ Features made:
 * Keyboard and mouse driven control.
 * 5 Heuristic functions (Manhattan, Euclidean, Octile, Chebyshev, h(x)=0 "Dijkstra case").
 
-Implementation detail:
+Implementation details:
 
 * Start, goal, walls nodes are constructed before pathfinding.
 * Graph (blank nodes) is constructed dynamically while pathfinding proceeds with O(1) new node insertion time.
