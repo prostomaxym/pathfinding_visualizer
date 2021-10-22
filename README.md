@@ -12,5 +12,6 @@ Features made:
 Implementation details:
 
 * Start, goal, walls nodes are constructed before pathfinding.
-* Graph (blank nodes) is constructed dynamically while pathfinding proceeds with O(1) new node insertion time.
+* Graph (blank nodes) is constructed dynamically during pathfinding.
+* Visited nodes are contained in std::map with O(log(n)) time for new nodes visiting and existing nodes revisiting.
 * Wall collision detection in O(1) time.
