@@ -102,16 +102,12 @@ std::list <Node*> Node::getNeighbours()
 		{
 			Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
 			neighbours.push_back(tmp);
-			graph.push_back(tmp);
+			graph.insert(std::make_pair(tmp->getCoordinates(), tmp));
 			return this->neighbours;
 		}
 
 		//check borders and walls
-		if ((x_ + direction[i][0] < 0)
-			|| (y_ + direction[i][1] < 0)
-			|| (x_ + direction[i][0] >= glutGet(GLUT_WINDOW_WIDTH) / field.getScale())
-			|| (y_ + direction[i][1] >= glutGet(GLUT_WINDOW_HEIGHT) / field.getScale())
-			|| (intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1]))))
+		if (intersect(std::make_pair(x_ + direction[i][0], y_ + direction[i][1])))
 				continue;
 
 		//check cornercrossing
@@ -126,11 +122,10 @@ std::list <Node*> Node::getNeighbours()
 		Node* tmp = new Node(x_ + direction[i][0], y_ + direction[i][1]);
 		
 		//if node already exists in grapth -  skip creation, rewrite pointer from graph to n->neighbours
-		auto alreadyExistIter = std::find_if(graph.begin(), graph.end(),
-			[&](const Node* p) {return *tmp == *p; });
+		auto alreadyExistIter = graph.find(tmp->getCoordinates());
 		if (alreadyExistIter != graph.end())
 		{
-			neighbours.push_back(*alreadyExistIter);
+			neighbours.push_back(alreadyExistIter->second);
 			delete tmp;
 			continue;
 		}
@@ -138,7 +133,7 @@ std::list <Node*> Node::getNeighbours()
 		else
 		{
 			neighbours.push_back(tmp);
-			graph.push_back(tmp);
+			graph.insert(std::make_pair(tmp->getCoordinates(), tmp));
 		}
 	}
 	return this->neighbours;

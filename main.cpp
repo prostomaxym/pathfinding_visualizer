@@ -1,6 +1,8 @@
 #include <ctime>
 #include <Windows.h>
 
+#include <map>
+#include <list>
 #include <vector>
 
 #include <glut.h>
@@ -39,17 +41,17 @@ GoalNode goal;
 std::vector <std::vector <WallNode>> wall;  //2d wall container for fast collision check
 std::list <WallNode*> walls;  //1d wall ptr list for fast node draw
 A_star pathfind;
-std::list <Node*> graph;
+std::map < std::pair <int, int>, Node*> graph;
 HeuristicFunc func = HeuristicFunc::manhattan;
 Text ui;
 
 void resetGraph()
 {
-	while (!graph.empty())
+	for (auto n : graph)
 	{
-		delete graph.back(); 
-		graph.pop_back();
+		delete n.second;
 	}
+	graph.clear();
 	pathfind.rebuild();
 }
 
@@ -90,7 +92,7 @@ void render()
 	{
 		for (auto n : graph)
 		{
-			n->drawNode();
+			n.second->drawNode();
 		}
 	}
 

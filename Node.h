@@ -7,15 +7,15 @@
 class Node
 {
 public:
-	Node();
-	Node(int x, int y);
-	Node(const Node &a);
+	Node();  //default constructor
+	Node(int x, int y);  //init coordinates constructor
+	Node(const Node &a);  //copy construstor
 
-	bool operator==(const Node& obj);
+	bool operator==(const Node& obj);  //same coordinates comparison
 
 	virtual void drawNode();
 	void drawNode(float r, float g, float b);
-	void clear();
+	void clear();  //reset all fields except coordinates
 
 	void setCoordinates(int x, int y);
 	void setParent(Node* A);
@@ -34,6 +34,8 @@ public:
 
 protected:
 	int x_, y_;  //node coordinates
+
+private:
 	Node* parent;  //came from node
 	std::list <Node*> neighbours;  //surrounding nodes
 	float gScore;

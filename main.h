@@ -1,6 +1,7 @@
 #ifndef PATHFINDING_VISUALIZER_MAIN_H_
 #define PATHFINDING_VISUALIZER_MAIN_H_
 
+#include <map>
 #include <vector>
 
 #include "A_star.h"
@@ -44,7 +45,8 @@ extern GoalNode goal;
 extern std::vector <std::vector <WallNode>> wall;
 extern std::list <WallNode*> walls;
 extern A_star pathfind;
-extern std::list <Node*> graph;
+extern std::map <std::pair<int, int>, Node*> graph;
+struct comp;
 
 void resetGraph();
 #endif  // PATHFINDING_VISUALIZER_MAIN_H_
