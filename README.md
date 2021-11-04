@@ -1,5 +1,6 @@
-# pathfinding_visualizer
+# Pathfinding visualization
 A* pathfinding  OpenGL/GLut based visualizer.
+Video demo: https://youtu.be/5dhX0XH9LMA.
 
 Features made:
 
